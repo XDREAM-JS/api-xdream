@@ -6,5 +6,9 @@ export const usuarioSchema = new Schema({
     genero :String,
     departamento :String,
     correo :String,
-    contraseña :String,
+    password :String,
+    rol:String,
+    fechaRegistro: { type : Date, default: Date.now, },
+    fechaActualizar: { type : Date, default: null, },
+    fechaEliminar: { type : Date, default: null, },
 })

@@ -8,5 +8,7 @@ export interface Usuario extends Document{
     genero :string;
     departamento :string;
     correo :string;
-    
+    rol:string;
+    fechaActualizar:Date;
+    fechaEliminar:Date;
 }

@@ -20,7 +20,6 @@ export class UsuarioController {
 
     @Post()
     createUsuario(@Body() dto:CreateUsuarioDto):Promise<Usuario>{
-        console.log(dto);
         return this._usuarioService.createUsuario(dto);
     }
 

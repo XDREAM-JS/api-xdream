@@ -9,25 +9,37 @@ export class UsuarioService {
 
     constructor(@InjectModel('usuario') private readonly usuarioModel:Model<Usuario>){}
 
-    async getUsuarios(){
+    async getUsuarios():Promise<Usuario[]>{
         return await this.usuarioModel.find();
     }
 
-    async getUsuario(idUsuario:string){
+    async getUsuario(idUsuario:string):Promise<Usuario>{
         return await this.usuarioModel.findById(idUsuario);
     }
 
-    async createUsuario(usuario:CreateUsuarioDto){
-        const result = new this.usuarioModel(usuario);
-        console.log(result);
-        return await result.save()
+    async createUsuario(usuario:CreateUsuarioDto):Promise<Usuario>{
+        // crea el objeto para guardar
+        const user = new this.usuarioModel(usuario);
+        return await user.save()
     }
 
-    editUsuario(idUsuario:string, usuario:EditUsuarioDto){
-        return {ok:'editUsuario'}
+    async editUsuario(idUsuario:string, usuario:EditUsuarioDto):Promise<Usuario>{
+        // crea el objeto para guardar
+        const user = new this.usuarioModel(usuario);
+        return await this.usuarioModel.updateOne({_id:idUsuario}, 
+            {
+                nombres: user.nombres, 
+                apellidos: user.apellidos, 
+                correo:user.correo, 
+                departamento: user.departamento,
+                genero: user.genero,
+                rol:user.rol,
+                password:user.password,
+                fechaActualizar : new Date()
+            });
     }
 
-    deleteUsuario(idUsuario:string){
-        return {ok:'deleteUsuario'}
+    async deleteUsuario(idUsuario:string):Promise<any>{
+        return await this.usuarioModel.updateOne({_id:idUsuario}, {fechaEliminar: new Date()});
     }
 }
