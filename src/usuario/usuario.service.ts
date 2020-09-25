@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Usuario } from 'src/interfaces';
 import { CreateUsuarioDto, EditUsuarioDto } from './dtos';
-import { Usuario } from './interfaces';
+
 
 @Injectable()
 export class UsuarioService {
@@ -13,19 +14,19 @@ export class UsuarioService {
         return await this.usuarioModel.find();
     }
 
-    async getUsuario(idUsuario:string):Promise<Usuario>{
-        return await this.usuarioModel.findById(idUsuario);
+    async getUsuario(id:string):Promise<Usuario>{
+        return await this.usuarioModel.findById(id);
     }
 
-    async createUsuario(usuario:CreateUsuarioDto):Promise<Usuario>{
+    async createUsuario(dto:CreateUsuarioDto):Promise<Usuario>{
         // crea el objeto para guardar
-        const user = new this.usuarioModel(usuario);
+        const user = new this.usuarioModel(dto);
         return await user.save()
     }
 
-    async editUsuario(idUsuario:string, usuario:EditUsuarioDto):Promise<Usuario>{
+    async editUsuario(idUsuario:string, dto:EditUsuarioDto):Promise<Usuario>{
         // crea el objeto para guardar
-        const user = new this.usuarioModel(usuario);
+        const user = new this.usuarioModel(dto);
         return await this.usuarioModel.updateOne({_id:idUsuario}, 
             {
                 nombres: user.nombres, 
@@ -39,7 +40,7 @@ export class UsuarioService {
             });
     }
 
-    async deleteUsuario(idUsuario:string):Promise<any>{
-        return await this.usuarioModel.updateOne({_id:idUsuario}, {fechaEliminar: new Date()});
+    async deleteUsuario(id:string):Promise<any>{
+        return await this.usuarioModel.updateOne({_id:id}, {fechaEliminar: new Date()});
     }
 }
